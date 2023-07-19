@@ -8,16 +8,27 @@ app = Flask(  # Create a flask app
 )
 
 
-username = "siwarha"
+username = "alma"
 password = "123"
-facebook_friends=["Loai","Kenda","Avigail", "George", "Fouad", "Gi"]
+facebook_friends=["Loai","Kenda","Avigail", "George", "Fouad", "Gi","Roni", "Zena", "Mjd"]
 
 
-@app.route('/')  # '/' for the default page
+@app.route('/', methods = ['GET','POST'])  # '/' for the default page
 def login():
-  return render_template('login.html')
-  
+	if request.method == 'POST':
+		name = request.form['username']
+		password1 = request.form['password']
+		if username == name and password == password1:
+			return redirect(url_for('home'))
+	return render_template('login.html')
 
+@app.route('/home')
+def home():
+  return render_template('home.html', f = facebook_friends)
+
+@app.route('/friend_exists/<string:name>')
+def friend_exists(name):
+	return render_template('friend_exists.html', statement= name in facebook_friends)
 
 
 if __name__ == "__main__":  # Makes sure this is the main process
